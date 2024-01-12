@@ -9,8 +9,8 @@ export default function EmailTemplate(props: EmailTemplateProps) {
     <div>
       <p>Hi {props.firstName},</p>
       <p>
-        Thanks for signing up for the newsletter. We'll send you updates once a
-        week.
+        Thanks for signing up for the newsletter. We will send you updates once
+        a week.
       </p>
     </div>
   );

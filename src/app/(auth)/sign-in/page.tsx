@@ -39,7 +39,7 @@ function Page() {
             })}
             href="/sign-up"
           >
-            Don't have an account? Sign-up
+            Dont have an account? Sign-up
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
