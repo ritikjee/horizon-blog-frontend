@@ -1,14 +1,16 @@
 "use client";
 
-import axios from "axios";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UploadDropzone } from "@/lib/uploadThing";
+import axios from "axios";
 import { ArrowRight, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 function Page() {
   const [formState, setFormState] = useState({
@@ -17,13 +19,35 @@ function Page() {
     username: "",
     password: "",
   });
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | undefined>(
+    undefined
+  );
   const [loadingProfileImage, setLoadingProfileImage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: any) => {
+  const router = useRouter();
+
+  const onSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(formState);
-    axios.post("/api/send");
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_backend_URL}/auth/sign-up`,
+        {
+          ...formState,
+          profileImage,
+        }
+      );
+
+      toast.success("Account created successfully!");
+      router.push("/");
+      router.refresh();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data);
+    } finally {
+      setLoading(false);
+    }
   };
   const onChange = (e: any) => {
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -84,7 +108,7 @@ function Page() {
                           />
                           <X
                             className="w-6 h-6 text-bold bg-rose-800 rounded-full absolute top-2 right-2 cursor-pointer"
-                            onClick={() => setProfileImage(null)}
+                            onClick={() => setProfileImage(undefined)}
                           />
                         </div>
                       )}
@@ -136,7 +160,13 @@ function Page() {
                 />
               </div>
 
-              <Button variant={"primary"}>Sign up</Button>
+              <Button disabled={loading} variant={"primary"}>
+                {loading ? (
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                ) : (
+                  "Sign Up"
+                )}
+              </Button>
             </div>
           </form>
         </div>

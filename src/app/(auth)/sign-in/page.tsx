@@ -1,20 +1,52 @@
 "use client";
 
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ArrowRight } from "lucide-react";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
 
 function Page() {
   const [formState, setFormState] = useState({
     identifier: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = () => {};
+  const router = useRouter();
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_backend_URL}/auth/sign-in`,
+        {
+          ...formState,
+        }
+      );
+
+      toast.success("Sign in successful!");
+      Cookies.set("horizon_auth_token", res.data.token);
+
+      router.push("/");
+      router.refresh();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data);
+    } finally {
+      setLoading(false);
+    }
+  };
   const onChange = (e: any) => {
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -44,12 +76,12 @@ function Page() {
           </Link>
         </div>
         <div className="grid gap-6">
-          <form>
+          <form onSubmit={onSubmit}>
             <div className="grid gap-2">
               <div className="grid gap-1 py-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Email or Username</Label>
                 <Input
-                  name="email"
+                  name="identifier"
                   placeholder="you@example.com"
                   value={formState.identifier}
                   onChange={onChange}

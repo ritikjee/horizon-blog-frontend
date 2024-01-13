@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
+import Navbar from "@/components/Navbar";
+import MaxWidthWrapper from "@/components/max-width-wrapper";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Horizon",
@@ -24,9 +27,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="max-w-7xl px-2 sm:px-5 md:px-10 lg:px-20">
-            {children}
-          </div>
+          <MaxWidthWrapper>
+            <Navbar />
+          </MaxWidthWrapper>
+          <Toaster position="top-center" richColors closeButton />
+          <div>{children}</div>
         </ThemeProvider>
       </body>
     </html>
