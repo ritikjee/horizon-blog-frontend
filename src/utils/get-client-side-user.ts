@@ -1,10 +1,9 @@
 import axios from "axios";
 
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import Cookies from "js-cookie";
 
-export const getServerSideUser = async () => {
-  const token = cookies().get("horizon_auth_token");
+export const getClientSideUser = async () => {
+  const token = Cookies.get("horizon_auth_token");
 
   if (!token) {
     return null;
@@ -15,14 +14,13 @@ export const getServerSideUser = async () => {
       `${process.env.NEXT_PUBLIC_backend_URL}/auth/user/me`,
       {
         headers: {
-          Authorization: `Bearer ${token.value}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
-
     return data.data;
   } catch (error) {
-    cookies().delete("horizon_auth_token");
+    Cookies.remove("horizon_auth_token");
     return null;
   }
 };

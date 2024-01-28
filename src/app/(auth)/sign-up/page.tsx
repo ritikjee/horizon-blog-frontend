@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import "@uploadthing/react/styles.css";
 
 function Page() {
   const [formState, setFormState] = useState({
@@ -95,7 +96,6 @@ function Page() {
                             setLoadingProfileImage(false);
                             setProfileImage(url[0].url);
                           }}
-                          className="text-primary dark:text-primary/90 p-2 rounded-md border border-primary dark:border-primary/90 hover:bg-primary dark:hover:bg-primary/90 hover:text-white dark:hover:text-white transition-colors w-32 h-32 "
                         />
                       ) : (
                         <div className="relative">

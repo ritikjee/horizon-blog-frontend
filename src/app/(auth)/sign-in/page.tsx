@@ -1,10 +1,11 @@
 "use client";
 
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 function Page() {
+  const params = useSearchParams().get("origin");
+
   const [formState, setFormState] = useState({
     identifier: "",
     password: "",
@@ -36,9 +39,16 @@ function Page() {
       );
 
       toast.success("Sign in successful!");
-      Cookies.set("horizon_auth_token", res.data.token);
+      Cookies.set("horizon_auth_token", res.data.token, {
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+      });
 
-      router.push("/");
+      if (params) {
+        router.push(params);
+      } else {
+        router.push("/");
+      }
+
       router.refresh();
     } catch (error: any) {
       console.log(error);
@@ -99,7 +109,13 @@ function Page() {
                 />
               </div>
 
-              <Button variant={"primary"}>Sign in</Button>
+              <Button disabled={loading} variant={"primary"}>
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  "Sign in"
+                )}
+              </Button>
             </div>
           </form>
         </div>

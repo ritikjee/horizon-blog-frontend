@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Link from "next/link";
 
 function UserButton({ user }: { user: any }) {
   const router = useRouter();
@@ -35,6 +36,9 @@ function UserButton({ user }: { user: any }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center">
         <DropdownMenuItem>{user.email}</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/profile/${user.username}`}>Profile</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={logout} className="cursor-pointer">
           Logout
         </DropdownMenuItem>

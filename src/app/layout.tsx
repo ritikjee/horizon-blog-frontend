@@ -1,10 +1,8 @@
+import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import Navbar from "@/components/Navbar";
-import MaxWidthWrapper from "@/components/max-width-wrapper";
+import "./globals.css";
 
 const inter = Open_Sans({ subsets: ["latin"] });
 
@@ -27,9 +25,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <MaxWidthWrapper>
-            <Navbar />
-          </MaxWidthWrapper>
           <Toaster position="top-center" richColors closeButton />
           <div>{children}</div>
         </ThemeProvider>
