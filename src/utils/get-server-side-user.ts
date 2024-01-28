@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export const getServerSideUser = async () => {
   const token = cookies().get("horizon_auth_token");

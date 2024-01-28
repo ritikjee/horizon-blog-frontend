@@ -6,8 +6,8 @@ import Comment from "@/components/comment";
 import { getServerSideUser } from "@/utils/get-server-side-user";
 
 async function BlogsPage({ params }: { params: { blogId: string } }) {
+  const user = await getServerSideUser();
   try {
-    const user = await getServerSideUser();
     const { data: blog } = await axios.get(
       `${process.env.NEXT_PUBLIC_backend_URL}/blog/getblogbyid/${params.blogId}`
     );
@@ -35,7 +35,7 @@ async function BlogsPage({ params }: { params: { blogId: string } }) {
           />
         </MaxWidthWrapper>
         <MaxWidthWrapper className="mb-20">
-          <Comment user={user} userId={user._id} blogId={params.blogId} />
+          <Comment user={user} userId={user?._id} blogId={params.blogId} />
         </MaxWidthWrapper>
       </>
     );
