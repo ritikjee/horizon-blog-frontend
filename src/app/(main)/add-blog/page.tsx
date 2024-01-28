@@ -135,11 +135,20 @@ function AddBlogPage() {
           <div className="grid gap-2">
             <div className="grid w-full gap-2">
               <Label htmlFor="blog">Your blog</Label>
-              <ReactQuill
+              {/* <ReactQuill
                 className="h-96"
                 theme="snow"
                 value={blog}
                 onChange={setBlog}
+              /> */}
+
+              <Input
+                className="h-96"
+                placeholder="Type your blog here"
+                name="blog"
+                id="blog"
+                value={blog}
+                onChange={(e) => setBlog(e.target.value)}
               />
             </div>
             <Button type="submit" className="mt-10">
